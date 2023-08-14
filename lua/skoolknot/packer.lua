@@ -49,4 +49,6 @@ return require('packer').startup(function(use)
   use 'lukas-reineke/indent-blankline.nvim'
 
   use 'folke/which-key.nvim'
+
+  use 'numToStr/Comment.nvim'
 end)
