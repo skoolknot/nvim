@@ -12,6 +12,6 @@ vim.opt.timeout = true
 vim.opt.timeoutlen = 300
 
 vim.opt.hlsearch = false
-vim.opt.incsearch = false
+vim.opt.incsearch = true
 
 vim.opt.scrolloff = 8
