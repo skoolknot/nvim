@@ -13,7 +13,8 @@ lsp.ensure_installed({
   'lua_ls',
   'html',
   'jsonls',
-  'cssls'
+  'cssls',
+  'clangd'
 })
 
 lsp.setup()
