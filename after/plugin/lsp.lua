@@ -14,7 +14,8 @@ lsp.ensure_installed({
   'html',
   'jsonls',
   'cssls',
-  'clangd'
+  'clangd',
+  'cmake'
 })
 
 lsp.setup()
