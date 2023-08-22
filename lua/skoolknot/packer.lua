@@ -51,4 +51,11 @@ return require('packer').startup(function(use)
   use 'folke/which-key.nvim'
 
   use 'numToStr/Comment.nvim'
+
+  use {
+    'nvim-tree/nvim-tree.lua',
+    requires = {
+      'nvim-tree/nvim-web-devicons', -- optional
+    },
+  }
 end)
