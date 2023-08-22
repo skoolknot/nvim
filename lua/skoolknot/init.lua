@@ -1,3 +1,2 @@
-require('skoolknot.remap')
 require('skoolknot.option')
-
+require('skoolknot.remap')
