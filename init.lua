@@ -341,4 +341,6 @@ require('which-key').setup {
 require('Comment').setup {}
 
 -- nvim-tree
+vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { desc = 'Toggle File [E]xplorer' })
+
 require('nvim-tree').setup {}
