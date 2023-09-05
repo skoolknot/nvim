@@ -131,7 +131,20 @@ require('onedark').load()
 -- nvim-treesitter
 require('nvim-treesitter.configs').setup {
   -- A list of parser names, or "all"
-  ensure_installed = { 'javascript', 'typescript', 'c', 'cpp', 'cmake', 'json', 'python', 'lua', 'vim', 'vimdoc', 'query' },
+  ensure_installed = {
+    'javascript',
+    'typescript',
+    'c',
+    'cpp',
+    'cmake',
+    'json',
+    'python',
+    'dart',
+    'lua',
+    'vim',
+    'vimdoc',
+    'query'
+  },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -159,7 +172,7 @@ vim.keymap.set('n', '<leader><F5>', vim.cmd.UndotreeToggle)
 -- lsp-zero
 local lsp = require('lsp-zero').preset({})
 
-lsp.on_attach(function(_, bufnr)
+local on_attach = function(_, bufnr)
   local nmap = function(keys, func, desc)
     if desc then
       desc = 'LSP: ' ..desc
@@ -180,7 +193,9 @@ lsp.on_attach(function(_, bufnr)
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-end)
+end
+
+lsp.on_attach(on_attach)
 
 lsp.ensure_installed({
   -- Replace these with whatever servers you want to install
@@ -194,6 +209,27 @@ lsp.ensure_installed({
   'cmake',
   'pyright'
 })
+
+-- dartls
+require('lspconfig').dartls.setup {
+  root_dir = require('lspconfig.util').root_pattern('pubspec.yaml'),
+  filetypes = { 'dart' },
+  cmd = { 'dart', 'language-server', '--protocol=lsp' },
+  init_options = {
+    closingLabels = true,
+    flutterOutline = true,
+    onlyAnalyzeProjectsWithOpenFiles = true,
+    outline = true,
+    suggestFromUnimportedLibraries = true
+  },
+  on_attach = on_attach,
+  settings = {
+    dart = {
+      completeFunctionCalls = true,
+      showTodos = true
+    }
+  }
+}
 
 lsp.setup()
 
