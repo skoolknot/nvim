@@ -233,7 +233,7 @@ require("lazy").setup({
 			local servers = {
 				clangd = {},
 				-- gopls = {},
-				-- pyright = {},
+				pyright = {},
 				-- tsserver = {},
 				lua_ls = {
 					settings = {
@@ -251,6 +251,8 @@ require("lazy").setup({
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua",
+				"isort",
+				"black",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -290,7 +292,7 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				-- python = { "isort", "black" },
+				python = { "isort", "black" },
 			},
 		},
 	},
