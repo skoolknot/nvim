@@ -232,6 +232,7 @@ require("lazy").setup({
 			-- Enable the following language servers
 			local servers = {
 				clangd = {},
+				cmake = {},
 				-- gopls = {},
 				pyright = {},
 				-- tsserver = {},
@@ -253,6 +254,8 @@ require("lazy").setup({
 				"stylua",
 				"isort",
 				"black",
+				"clang-format",
+				"cmakelang",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -293,6 +296,9 @@ require("lazy").setup({
 			formatters_by_ft = {
 				lua = { "stylua" },
 				python = { "isort", "black" },
+				c = { "clang-format" },
+				cpp = { "clang-format" },
+				cmake = { "cmake_format" },
 			},
 		},
 	},
@@ -382,14 +388,13 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		opts = {
-			ensure_installed = { "bash", "c", "html", "lua", "luadoc", "vim", "vimdoc" },
+			ensure_installed = { "bash", "c", "cpp", "cmake", "python", "html", "lua", "luadoc", "vim", "vimdoc" },
 			-- Autoinstall languages that are not installed
 			auto_install = true,
 			highlight = {
 				enable = true,
-				additional_vim_regex_highlighting = { "ruby" },
 			},
-			indent = { enable = true, disable = { "ruby" } },
+			indent = { enable = true },
 		},
 		config = function(_, opts)
 			require("nvim-treesitter.install").prefer_git = true
