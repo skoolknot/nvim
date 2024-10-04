@@ -244,7 +244,7 @@ require("lazy").setup({
 				cmake = {},
 				-- gopls = {},
 				pyright = {},
-				-- tsserver = {},
+				ts_ls = {},
 				lua_ls = {
 					settings = {
 						Lua = {
