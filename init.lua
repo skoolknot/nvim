@@ -72,10 +72,19 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- [[ `lazy.nvim` plugin manager ]]
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-	vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-end
+	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+	if vim.v.shell_error ~= 0 then
+		vim.api.nvim_echo({
+			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+			{ out, "WarningMsg" },
+			{ "\nPress any key to exit..." },
+		}, true, {})
+		vim.fn.getchar()
+		os.exit(1)
+	end
+end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- [[ Plugins ]]
@@ -220,7 +229,7 @@ require("lazy").setup({
 
 					if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
 						map("<leader>th", function()
-							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
 						end, "[T]oggle Inlay [H]ints")
 					end
 				end,
@@ -245,6 +254,7 @@ require("lazy").setup({
 						},
 					},
 				},
+				angularls = {},
 			}
 
 			require("mason").setup()
@@ -256,6 +266,8 @@ require("lazy").setup({
 				"black",
 				"clang-format",
 				"cmakelang",
+				"prettierd",
+				"prettier",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -299,6 +311,7 @@ require("lazy").setup({
 				c = { "clang-format" },
 				cpp = { "clang-format" },
 				cmake = { "cmake_format" },
+				javascript = { "prettierd", "prettier", stop_after_first = true },
 			},
 		},
 	},
