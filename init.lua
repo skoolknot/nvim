@@ -120,7 +120,6 @@ require("lazy").setup({
 	},
 
 	"folke/which-key.nvim",
-
 	{
 		"nvim-telescope/telescope.nvim",
 		event = "VimEnter",
@@ -255,25 +254,19 @@ require("lazy").setup({
 				gopls = {},
 				pyright = {},
 				ts_ls = {},
-				lua_ls = {
-					settings = {
-						Lua = {
-							completion = {
-								callSnippet = "Replace",
-							},
-						},
-					},
-				},
+				lua_ls = {},
 				angularls = {},
+				eslint = {},
 			}
 
 			require("mason").setup()
 
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
+				-- You can add other tools here that you want Mason to install
 				"stylua",
 				"prettierd",
-				"prettier",
+				"black",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -291,7 +284,8 @@ require("lazy").setup({
 
 	{
 		"stevearc/conform.nvim",
-		lazy = false,
+		event = { "BufWritePre" },
+		cmd = { "ConformInfo" },
 		keys = {
 			{
 				"<leader>f",
@@ -304,17 +298,20 @@ require("lazy").setup({
 		},
 		opts = {
 			notify_on_error = false,
-			format_on_save = function(bufnr)
-				local disable_filetypes = { c = true, cpp = true }
-				return {
-					timeout_ms = 500,
-					lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-				}
-			end,
+			format_on_save = {
+				lsp_format = "fallback",
+				timeout_ms = 500,
+			},
+			default_format_opts = {
+				lsp_format = "fallback", -- Use external formatters if configured below, otherwise use LSP formatting. Set to `false` to disable LSP formatting entirely.
+			},
 			formatters_by_ft = {
+				-- You can also specify external formatters in here.
 				lua = { "stylua" },
-				javascript = { "prettierd", "prettier", stop_after_first = true },
 				go = { "gofmt" },
+				python = { "black" },
+				javascript = { "prettierd" },
+				typescript = { "prettierd" },
 			},
 		},
 	},
