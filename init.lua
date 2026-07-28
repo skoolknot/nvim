@@ -252,7 +252,7 @@ require("lazy").setup({
 			local servers = {
 				clangd = {},
 				gopls = {},
-				pyright = {},
+				basedpyright = {},
 				vtsls = {},
 				lua_ls = {},
 				angularls = {},
@@ -266,7 +266,7 @@ require("lazy").setup({
 				-- You can add other tools here that you want Mason to install
 				"stylua",
 				"prettierd",
-				"black",
+				"ruff",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -309,7 +309,7 @@ require("lazy").setup({
 				-- You can also specify external formatters in here.
 				lua = { "stylua" },
 				go = { "gofmt" },
-				python = { "black" },
+				python = { "ruff_fix", "ruff_format" },
 				javascript = { "prettierd" },
 				typescript = { "prettierd" },
 				css = { "prettierd" },
